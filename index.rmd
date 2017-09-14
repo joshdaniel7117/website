@@ -1,0 +1,54 @@
+---
+title: "SQL"
+output: html_document
+---
+
+##Filtering
+```{r}
+library(sqldf)
+library(Lahman)
+```
+
+SELECT and FROM and where
+
+Example 1:
+
+Homerun Totals of the 1927 Yankees
+
+```{r}
+query<-"Select HR, playerID,teamID From Batting
+where teamID='NYA'and yearID=1927"
+sqldf(query)
+```
+
+Yankees Hitting 40 or More Homeruns
+
+```{r}
+query<-"Select HR, playerID, yearID, teamID FROM Batting
+where HR>=40 and teamID='NYA'"
+sqldf(query)
+```
+Example 3 Any Player More than 40 Homeruns but less than 60 Strikeouts
+
+```{r}
+query<-"Select HR, playerID, teamID, SO From Batting
+where HR>40 and SO<60"
+sqldf(query)
+```
+Example 4 - 1970's Phillies Hitting More than 30 Homeruns
+
+```{r}
+query<-"Select HR, playerID, yearID, teamID From Batting
+where HR>30 and teamID='PHI' and yearID>1969 and yearID<1980"
+sqldf(query)
+```
+##Ordering
+
+Example 1 - Every time a player hit 50 Homeruns from highest to lowest total
+
+```{r}
+query<-"select HR, playerID, teamID from Batting
+where HR>=50 Order By HR DESC"
+sqldf(query)
+```
+
