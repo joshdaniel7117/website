@@ -21,6 +21,7 @@ where teamID='NYA'and yearID=1927"
 sqldf(query)
 ```
 
+
 Yankees Hitting 40 or More Homeruns
 
 ```{r}
@@ -28,6 +29,7 @@ query<-"Select HR, playerID, yearID, teamID FROM Batting
 where HR>=40 and teamID='NYA'"
 sqldf(query)
 ```
+
 Example 3 Any Player More than 40 Homeruns but less than 60 Strikeouts
 
 ```{r}
@@ -35,6 +37,7 @@ query<-"Select HR, playerID, teamID, SO From Batting
 where HR>40 and SO<60"
 sqldf(query)
 ```
+
 Example 4 - 1970's Phillies Hitting More than 30 Homeruns
 
 ```{r}
@@ -44,11 +47,45 @@ sqldf(query)
 ```
 ##Ordering
 
-Example 1 - Every time a player hit 50 Homeruns from highest to lowest total
+Example 1 - Every time a player hit 50 or more Homeruns from highest to lowest total
 
 ```{r}
 query<-"select HR, playerID, teamID from Batting
-where HR>=50 Order By HR DESC"
+where HR>=50 
+Order By HR DESC"
+sqldf(query)
+
+
+```
+Example 2 - Find all instances of a player striking out less than 10 times. Make sure each player has at least 400 at bats. Order by least to most strikeouts
+```{r}
+query<-"select SO, AB, playerID, teamID, yearID from Batting where SO<10 and AB>=400 Order by SO"
+sqldf(query)
+```
+
+find the career home run total for babe ruth
+
+```{r}
+query<-"select sum(HR), playerID from Batting where playerID='ruthba01' group by playerID"
+sqldf(query)
+```
+
+find the career hR totals of any player who had 600 or more career hR, desc order
+```{r}
+query<-"select sum(HR), playerID from Batting group by playerID having sum(HR)>=600 order by sum(HR) Desc"
+sqldf(query)
+```
+Players who have the highest average per season HR, avg over 30, desc
+
+```{r}
+query<-"select avg(HR), playerID from Batting group by playerID having avg(HR)>30 order by avg(HR) desc"
+sqldf(query)
+```
+
+First and last name along with the team, year, HR Babe ruth
+```{r}
+query<-"select nameFIRST,nameLAST, teamID, yearID, HR from Batting 
+inner join Master ON Batting.playerID=Master.playerID where Batting.playerID='ruthba01'"
 sqldf(query)
 ```
 
